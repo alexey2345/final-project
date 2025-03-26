@@ -1,0 +1,31 @@
+const cors = require("cors");
+const express = require("express");
+const userRouter = require("./routes/users");
+const mongoose = require("mongoose");
+const authRouter = require("./routes/auth");
+const cardsRouter = require("./routes/cards");
+const adminRoutes = require("./routes/admin");
+
+const PORT = 3001;
+const app = express();
+
+app.use(cors());
+app.use(require("morgan")("dev"));
+app.use(express.json());
+app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/cards", cardsRouter);
+app.use("/api/admin", adminRoutes);
+
+connect();
+async function connect() {
+  try {
+    await mongoose.connect(
+      "mongodb+srv://user:user@cluster0.vwbjx.mongodb.net/db?retryWrites=true&w=majority&appName=Cluster0",
+    );
+    console.log("connect to db");
+    app.listen(PORT, () => console.log(`listening to port ${PORT}`));
+  } catch (e) {
+    console.log("failed to connect", e.message);
+  }
+}
