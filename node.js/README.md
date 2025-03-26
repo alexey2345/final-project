@@ -27,14 +27,3 @@ connection string:"mongodb+srv://user:user@cluster0.vwbjx.mongodb.net/db?retryWr
 atlas database
 name:user
 password:user
-
-registred users
-
-user:john.doerr@aleeex.com
-password:securePassword1
-
-user:admin@admin.com
-password:securePassword1
-
-user:not@business.com
-password:securePassword1
