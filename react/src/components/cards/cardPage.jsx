@@ -55,7 +55,7 @@ const CardPage = (props) => {
 
     try {
       await axios.patch(
-        `${config.apiUrl}/cards/${cardId}`,
+        `${config.apiUrl}/cards/likes/${cards[0]._id}`, // Use the correct card ID
         {},
         {
           headers: {

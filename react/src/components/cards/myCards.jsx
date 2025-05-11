@@ -136,7 +136,7 @@ function MyCards() {
 
     try {
       const response = await axios.patch(
-        `${config.apiUrl}/cards/${cardId}/like`, // ✅ Corrected route
+        `${config.apiUrl}/cards/likes/${cardId}`, // ✅ Corrected route
         {},
         {
           headers: {
