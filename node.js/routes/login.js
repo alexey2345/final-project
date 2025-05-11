@@ -2,6 +2,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../model/users");
+const config = require("../config/config");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -12,10 +13,19 @@ const login = async (req, res) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(400).send("Invalid credentials");
 
-  // Create JWT token
-  const token = jwt.sign({ id: user._id, role: user.role }, "your_jwt_secret", {
-    expiresIn: "1h",
-  });
+  // ✅ Include user's name in token payload
+  const token = jwt.sign(
+    {
+      id: user._id,
+      name: User.name.,
+
+      isAdmin: user.isAdmin,
+      // 👈 Add this line
+    },
+    config.jwtKey,
+    { expiresIn: "1h" },
+  );
+
   res.json({ token });
 };
 

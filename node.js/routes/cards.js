@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authMW = require("../middleware/auth");
 const { validateCard, Card, generateListingNumber } = require("../model/cards");
+const auth = require("../middleware/auth");
 
 router.post("/", authMW, async (req, res) => {
   const { error } = validateCard(req.body);
@@ -104,38 +105,28 @@ router.patch("/my-cards/:id", authMW, async (req, res) => {
   }
 });
 
-router.patch("/like/:id", authMW, async (req, res) => {
-  try {
-    const cardId = req.params.id;
+router.patch("/likes/:id", auth, async (req, res) => {
+  console.log("Decoded JWT payload:", req.user); // ← you should see { id, name, role }
+  const card = await Card.findById(req.params.id);
+  if (!card) return res.status(404).send("Card not found");
 
-    // Find the card by ID
-    const card = await Card.findById(cardId);
-    if (!card) {
-      return res.status(404).send("Card not found.");
-    }
-
-    // Check if the user has already liked the card
-    const userIndex = card.likes.indexOf(req.user._id);
-    if (userIndex !== -1) {
-      // User has already liked the card, so remove the like
-      card.likes.splice(userIndex, 1);
-    } else {
-      // User has not liked the card, so add the like
-      card.likes.push(req.user._id);
-    }
-
-    // Update the like count based on the array length
-    card.likeCount = card.likes.length;
-
-    // Save the updated card
-    await card.save();
-
-    // Respond with the updated card
-    res.status(200).json(card);
-  } catch (err) {
-    console.error("Error toggling the like status:", err);
-    res.status(500).send("Error toggling the like status.");
+  let username = req.user.name;
+  if (!username && req.user.id) {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(400).send("User not found");
+    username = user.name;
   }
+  if (!username) return res.status(400).send("User name missing");
+
+  // toggle like/unlike
+  if (card.likes.includes(username)) {
+    card.likes = card.likes.filter((u) => u !== username);
+  } else {
+    card.likes.push(username);
+  }
+
+  await card.save();
+  res.send({ likes: card.likes });
 });
 
 router.patch("/listNumber/:id", authMW, async (req, res) => {

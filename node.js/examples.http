@@ -1,4 +1,4 @@
-@local=http://localhost:3001
+@local=http://localhost:5000
 #admin token
 @token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2UxYWNkNWRiNzViZjZjYWI2NTBmYTkiLCJiaXoiOnRydWUsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDI5MzYyMjB9.AzMObi_SbsoqNT0o4DoCgi4auqybwe0F8FscNHmLWis
 
@@ -149,7 +149,7 @@ Content-Type: application/json
 
 #get card by id
 ###
-GET {{local}}/api/cards/my-cards/679500e3ba3d3363c7b11146
+GET {{local}}/api/cards/my-cards/67e31a5817ff2466660c4015
 x-auth-token: {{token}}
 Content-Type: application/json
 
@@ -170,7 +170,7 @@ Content-Type: application/json
 
     #like card
 ###
-PATCH {{local}}/api/cards/like/67e31a5817ff2466660c4015
+PATCH {{local}}/api/cards/likes/67e31a5817ff2466660c4015
 x-auth-token: {{token}}
 Content-Type: application/json
 

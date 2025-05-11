@@ -6,7 +6,7 @@ const authRouter = require("./routes/auth");
 const cardsRouter = require("./routes/cards");
 const adminRoutes = require("./routes/admin");
 
-const PORT = 3001;
+const PORT = 5000;
 const app = express();
 
 app.use(cors());
